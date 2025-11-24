@@ -1,0 +1,375 @@
+{
+  "address": "5hfBCMBJLM9t9UfBqQcwcN4R15nLuLFC8GtBQEN6JRcb",
+  "metadata": {
+    "name": "solana_flip_off",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "claim_timeout_win",
+      "discriminator": [
+        175,
+        234,
+        101,
+        151,
+        53,
+        30,
+        177,
+        137
+      ],
+      "accounts": [
+        {
+          "name": "game_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  97,
+                  109,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "game_account.player_one",
+                "account": "Game"
+              },
+              {
+                "kind": "account",
+                "path": "game_account.game_id",
+                "account": "Game"
+              }
+            ]
+          }
+        },
+        {
+          "name": "signer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "treasury_wallet_pubkey",
+          "writable": true,
+          "address": "FMyx18iJ4jkMcbK4uFZHdcZLkkJVzfFaP798wsiErFuA"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "clock",
+          "address": "SysvarC1ock11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "create_game",
+      "discriminator": [
+        124,
+        69,
+        75,
+        66,
+        184,
+        220,
+        72,
+        206
+      ],
+      "accounts": [
+        {
+          "name": "player_one",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "game_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  97,
+                  109,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player_one"
+              },
+              {
+                "kind": "arg",
+                "path": "game_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "game_id",
+          "type": "u64"
+        },
+        {
+          "name": "stake_amount_lamports",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "join_game",
+      "discriminator": [
+        107,
+        112,
+        18,
+        38,
+        56,
+        173,
+        60,
+        128
+      ],
+      "accounts": [
+        {
+          "name": "player_two",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "game_account",
+          "writable": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "clock",
+          "address": "SysvarC1ock11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "play_turn",
+      "discriminator": [
+        116,
+        200,
+        44,
+        67,
+        23,
+        228,
+        209,
+        99
+      ],
+      "accounts": [
+        {
+          "name": "signer",
+          "signer": true
+        },
+        {
+          "name": "game_account",
+          "writable": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "resolve_game",
+      "discriminator": [
+        25,
+        119,
+        183,
+        229,
+        196,
+        69,
+        169,
+        79
+      ],
+      "accounts": [
+        {
+          "name": "game_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  97,
+                  109,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "game_account.player_one",
+                "account": "Game"
+              },
+              {
+                "kind": "account",
+                "path": "game_account.game_id",
+                "account": "Game"
+              }
+            ]
+          }
+        },
+        {
+          "name": "winner_pubkey",
+          "writable": true
+        },
+        {
+          "name": "loser_pubkey"
+        },
+        {
+          "name": "treasury_wallet_pubkey",
+          "writable": true,
+          "address": "FMyx18iJ4jkMcbK4uFZHdcZLkkJVzfFaP798wsiErFuA"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Game",
+      "discriminator": [
+        27,
+        90,
+        166,
+        125,
+        74,
+        100,
+        121,
+        18
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "InvalidGameState",
+      "msg": "Invalid game state."
+    },
+    {
+      "code": 6001,
+      "name": "AlreadyJoined",
+      "msg": "Player already joined."
+    },
+    {
+      "code": 6002,
+      "name": "Unauthorized",
+      "msg": "Unauthorized."
+    },
+    {
+      "code": 6003,
+      "name": "InsufficientStake",
+      "msg": "Insufficient stake."
+    },
+    {
+      "code": 6004,
+      "name": "TimeoutNotReached",
+      "msg": "Timeout not reached yet."
+    },
+    {
+      "code": 6005,
+      "name": "NotYourTurnToClaim",
+      "msg": "You cannot claim timeout on your own turn."
+    }
+  ],
+  "types": [
+    {
+      "name": "Game",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "game_id",
+            "type": "u64"
+          },
+          {
+            "name": "player_one",
+            "type": "pubkey"
+          },
+          {
+            "name": "player_two",
+            "type": "pubkey"
+          },
+          {
+            "name": "stake_amount",
+            "type": "u64"
+          },
+          {
+            "name": "player_one_score",
+            "type": "u8"
+          },
+          {
+            "name": "player_two_score",
+            "type": "u8"
+          },
+          {
+            "name": "player_one_turns",
+            "type": "u8"
+          },
+          {
+            "name": "player_two_turns",
+            "type": "u8"
+          },
+          {
+            "name": "game_state",
+            "type": {
+              "defined": {
+                "name": "GameState"
+              }
+            }
+          },
+          {
+            "name": "active_player",
+            "type": "pubkey"
+          },
+          {
+            "name": "game_start_time",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "GameState",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "WaitingForPlayer"
+          },
+          {
+            "name": "Active"
+          },
+          {
+            "name": "LastChance"
+          },
+          {
+            "name": "SuddenDeath"
+          },
+          {
+            "name": "Finished"
+          }
+        ]
+      }
+    }
+  ]
+}
