@@ -7,6 +7,10 @@ import useSound from "use-sound";
 // @ts-ignore
 import { BN } from "@coral-xyz/anchor";
 
+// FIREBASE
+import { db } from "../firebase"; 
+import { ref, onValue, set } from "firebase/database";
+
 type Props = {
   gameAccount: PublicKey;
   gameState: any;
@@ -16,171 +20,212 @@ export default function GameArena({ gameAccount, gameState: initialGameState }: 
   const program = useAnchorProgram();
   const { publicKey } = useWallet();
   
-  // State
-  const [currentGameState, setCurrentGameState] = useState<any>(initialGameState);
+  // --- STATE ---
+  const [firebaseData, setFirebaseData] = useState<any>(null);
+  
+  // Chain Data State (To track P2 joining)
+  const [p1Key, setP1Key] = useState<string>("");
+  const [p2Key, setP2Key] = useState<string>("");
+
   const [bottleState, setBottleState] = useState<'stand' | 'fall'>('stand');
   const [isFlipping, setIsFlipping] = useState(false);
   const [gaugePosition, setGaugePosition] = useState(0);
-  
-  const [gameStatus, setGameStatus] = useState<string>("WAITING");
-  const [activePlayer, setActivePlayer] = useState<string | null>(null);
   const [showClaim, setShowClaim] = useState(false);
 
-  // LOCAL SCOREBOARD
-  const [localP1Score, setLocalP1Score] = useState(0);
-  const [localP2Score, setLocalP2Score] = useState(0);
-
-  const gameStateRef = useRef<any>(initialGameState);
   const requestRef = useRef<number | null>(null);
   const isInteractionLocked = useRef(false); 
-  
-  const [startTime, setStartTime] = useState<number>(0);
+  const gameStateRef = useRef<any>(initialGameState);
 
   const [playSuccess] = useSound('/sounds/bottle-stand.wav');
   const [playFail] = useSound('/sounds/bottle-fall.wav');
 
-  // 1. SETUP & SYNC LOOP
-  const fetchGameData = useCallback(async () => {
-    if (!program || !gameAccount) return;
-    try {
-      // @ts-ignore
-      const account = await program.account.game.fetch(gameAccount);
-      setCurrentGameState(account);
-      gameStateRef.current = account;
-
-      const p1 = account.playerOne.toString();
-      const p2 = account.playerTwo.toString();
-      
-      // Check if P2 has joined (Is P2 NOT the default 1111... address?)
-      // We use PublicKey.default to be safe
-      const isP2Joined = p2 !== PublicKey.default.toString();
-
-      // Logic to transition from WAITING -> ACTIVE
-      if (isP2Joined) {
-          // If we were waiting, OR if we just loaded in and need to start
-          if (gameStatus === "WAITING") {
-              console.log("🚀 P2 Detected! Starting Game...");
-              setGameStatus("ACTIVE");
-              setActivePlayer(p1); // P1 always starts
-              setStartTime(Date.now()); 
-          }
+  // 1. FETCH CHAIN DATA (POLLING LOOP)
+  // We need this to detect when P2 joins the blockchain
+  const fetchChainData = useCallback(async () => {
+      if (!program || !gameAccount) return;
+      try {
+          // @ts-ignore
+          const account = await program.account.game.fetch(gameAccount);
+          gameStateRef.current = account;
           
-          // Also sync active player if it changes
-          const chainActive = account.activePlayer.toString();
-          if (activePlayer !== chainActive && !isFlipping) {
-             setActivePlayer(chainActive);
+          const p1 = account.playerOne.toString();
+          const p2 = account.playerTwo.toString();
+          
+          // Update state if changed
+          setP1Key(p1);
+          if (p2 && p2 !== "11111111111111111111111111111111") {
+              setP2Key(p2);
           }
-      }
-
-    } catch (err) {
-      if ((err as any).message?.includes("Account does not exist")) {
-          setGameStatus("CLOSED"); 
-      }
-    }
-  }, [program, gameAccount, gameStatus, activePlayer, isFlipping]);
+      } catch(e) { console.log(e); }
+  }, [program, gameAccount]);
 
   useEffect(() => {
-    fetchGameData();
-    const interval = setInterval(fetchGameData, 2000); // Poll every 2s
-    return () => clearInterval(interval);
-  }, [fetchGameData]);
+      fetchChainData();
+      const interval = setInterval(fetchChainData, 2000); // Poll every 2s
+      return () => clearInterval(interval);
+  }, [fetchChainData]);
 
-  // 2. GAUGE ANIMATION
+  // 2. FIREBASE LISTENER
+  useEffect(() => {
+      if (!gameAccount || !publicKey) return;
+      const gameRef = ref(db, 'games/' + gameAccount.toString());
+      
+      const unsubscribe = onValue(gameRef, (snapshot) => {
+          const data = snapshot.val();
+          if (data) {
+              setFirebaseData(data);
+              
+              if (data.gameStatus === "FINISHED") {
+                   const myKey = publicKey.toString();
+                   // Determine winner for Claim button
+                   if ((myKey === p1Key && data.p1Score > data.p2Score) || 
+                       (myKey === p2Key && data.p2Score > data.p1Score)) {
+                       setShowClaim(true);
+                   }
+              }
+          } else {
+              // Init Firebase if empty (Only if we know P1 key)
+              if (p1Key && publicKey.toString() === p1Key) {
+                  set(gameRef, {
+                      p1Score: 0, p2Score: 0, turnCount: 0, gameStatus: "WAITING"
+                  });
+              }
+          }
+      });
+      return () => unsubscribe();
+  }, [gameAccount, publicKey, p1Key, p2Key]);
+
+  // 3. AUTO-START (If P2 is found on chain)
+  useEffect(() => {
+      // If Firebase says WAITING, but we see P2 on chain...
+      if (firebaseData?.gameStatus === "WAITING" && p2Key && p2Key !== "11111111111111111111111111111111") {
+          console.log("P2 Detected! Starting Game...");
+          
+          // ANYONE can update this to unblock the game
+          set(ref(db, 'games/' + gameAccount.toString()), {
+              ...firebaseData,
+              gameStatus: "ACTIVE"
+          });
+      }
+  }, [p2Key, firebaseData, gameAccount]);
+
+  // 4. GAUGE ANIMATION
   const animateGauge = useCallback(() => {
-    if (isInteractionLocked.current || gameStatus === "FINISHED" || gameStatus === "CLOSED") return;
+    if (isInteractionLocked.current || !firebaseData || (firebaseData.gameStatus !== "ACTIVE" && firebaseData.gameStatus !== "LAST_CHANCE" && firebaseData.gameStatus !== "SUDDEN_DEATH")) return;
 
-    if (startTime > 0) {
-        const now = Date.now();
-        const elapsed = (now - startTime) / 1000;
-        const cyclePosition = (elapsed % 2.8) / 2.8; 
-        setGaugePosition(cyclePosition * 100);
-    }
+    const now = Date.now() / 1000;
+    const cyclePosition = (now % 2.8) / 2.8; 
+    setGaugePosition(cyclePosition * 100);
+
     requestRef.current = requestAnimationFrame(animateGauge);
-  }, [gameStatus, startTime]);
+  }, [firebaseData]);
 
   useEffect(() => {
     requestRef.current = requestAnimationFrame(animateGauge);
     return () => { if (requestRef.current) cancelAnimationFrame(requestRef.current); };
   }, [animateGauge]);
 
-  // 3. HANDLE TAP
+  // 5. HANDLE TAP
   const handleTap = async () => {
-    if (isFlipping || isInteractionLocked.current || gameStatus !== "ACTIVE") return;
-    
-    const myKey = publicKey?.toString();
-    if (activePlayer !== myKey) return alert("Wait for your turn!");
+    if (!firebaseData || isFlipping || isInteractionLocked.current) return;
+    if (firebaseData.gameStatus === "FINISHED" || firebaseData.gameStatus === "WAITING" || firebaseData.gameStatus === "CLOSED") return;
 
+    const myKey = publicKey?.toString();
+    
+    const isP1Turn = firebaseData.turnCount % 2 === 0;
+    const isMyTurn = (myKey === p1Key && isP1Turn) || (myKey === p2Key && !isP1Turn);
+
+    if (!isMyTurn) return alert("Wait for your turn!");
+
+    // FREEZE
     isInteractionLocked.current = true;
     if (requestRef.current) cancelAnimationFrame(requestRef.current);
 
-    const now = Date.now();
-    const elapsed = (now - startTime) / 1000;
-    const cyclePos = ((elapsed % 2.8) / 2.8) * 100;
+    // CALCULATE
+    const now = Date.now() / 1000;
+    const cyclePos = ((now % 2.8) / 2.8) * 100;
     setGaugePosition(cyclePos);
 
     const isWin = cyclePos >= 46 && cyclePos <= 54;
 
+    // SPIN
     setIsFlipping(true);
 
     setTimeout(() => {
         setIsFlipping(false);
         
-        let gameIsOver = false;
-
+        let newP1 = firebaseData.p1Score;
+        let newP2 = firebaseData.p2Score;
+        
         if (isWin) {
             playSuccess();
             setBottleState('stand');
-            
-            if (activePlayer === currentGameState.playerOne.toString()) {
-                const newScore = localP1Score + 1;
-                setLocalP1Score(newScore);
-                if (newScore >= 3) {
-                    setGameStatus("FINISHED"); 
-                    setShowClaim(true);
-                    gameIsOver = true;
-                }
-            } else {
-                const newScore = localP2Score + 1;
-                setLocalP2Score(newScore);
-                if (newScore >= 3) {
-                    setGameStatus("FINISHED");
-                    setShowClaim(true);
-                    gameIsOver = true;
-                }
-            }
+            if (myKey === p1Key) newP1++; else newP2++;
         } else {
             playFail();
             setBottleState('fall');
         }
 
-        if (!gameIsOver) {
-            const p1 = currentGameState.playerOne.toString();
-            const p2 = currentGameState.playerTwo.toString();
-            setActivePlayer(activePlayer === p1 ? p2 : p1);
+        // FAIRNESS LOGIC
+        let nextStatus = firebaseData.gameStatus;
+        const currentTurn = firebaseData.turnCount;
+        const p1JustPlayed = (currentTurn % 2 === 0);
+
+        if (nextStatus === "SUDDEN_DEATH") {
+            if (p1JustPlayed) { 
+                // Wait for P2 
+            } else {
+                if (newP1 !== newP2) nextStatus = "FINISHED";
+            }
+        } 
+        else if (nextStatus === "LAST_CHANCE") {
+            if (newP1 === newP2) nextStatus = "SUDDEN_DEATH";
+            else nextStatus = "FINISHED";
+        } 
+        else {
+            if (newP1 >= 3 || newP2 >= 3) {
+                if (newP1 > newP2) {
+                    if (p1JustPlayed) nextStatus = "LAST_CHANCE";
+                    else nextStatus = "FINISHED";
+                } else if (newP2 > newP1) {
+                    nextStatus = "FINISHED";
+                } else {
+                    nextStatus = "SUDDEN_DEATH";
+                }
+            }
         }
 
+        const nextPlayer = (myKey === p1Key) ? p2Key : p1Key;
+
+        set(ref(db, 'games/' + gameAccount.toString()), {
+            p1Score: newP1,
+            p2Score: newP2,
+            gameStatus: nextStatus,
+            turnCount: currentTurn + 1,
+            activePlayer: nextStatus === "FINISHED" ? "NONE" : nextPlayer
+        });
+
         setTimeout(() => {
-            if (!gameIsOver) {
-                setBottleState('stand'); 
-                isInteractionLocked.current = false; 
-                animateGauge(); 
-            }
+            setBottleState('stand'); 
+            isInteractionLocked.current = false; 
+            animateGauge(); 
         }, 2000);
 
     }, 700);
   };
 
-  // 4. CLAIM PRIZE
   const handleClaim = async () => {
       if (!program || !publicKey) return;
       try {
-          const isP1 = currentGameState.playerOne.toString() === publicKey.toString();
-          const loserKey = isP1 ? currentGameState.playerTwo : currentGameState.playerOne;
+          const loserKey = publicKey?.toString() === p1Key ? p2Key : p1Key;
+          const winnerPK = new PublicKey(publicKey.toString());
+          const loserPK = new PublicKey(loserKey);
 
-          await program.methods.claimVictory()
+          await program.methods.resolveGame()
             .accounts({
                 gameAccount: gameAccount,
-                winner: publicKey,
+                winnerPubkey: winnerPK, 
+                loserPubkey: loserPK,
             })
             .rpc();
           alert("$$$ PAYOUT RECEIVED $$$");
@@ -191,17 +236,21 @@ export default function GameArena({ gameAccount, gameState: initialGameState }: 
       }
   };
 
-  if (gameStatus === "CLOSED") return <div style={{height: "100vh", background: "#000", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24}}>GAME OVER. PRIZE CLAIMED.</div>;
-  
-  if (!currentGameState) return <div style={{height: "100vh", background: "#000", color: "lime", display: "flex", alignItems: "center", justifyContent: "center"}}>LOADING...</div>;
+  if (!firebaseData) return <div style={{height: "100vh", background: "#000", color: "lime", display: "flex", alignItems: "center", justifyContent: "center"}}>CONNECTING...</div>;
+  if (firebaseData.gameStatus === "CLOSED") return <div style={{height: "100vh", background: "#000", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24}}>GAME OVER. PRIZE CLAIMED.</div>;
 
   const myKey = publicKey?.toString();
-  const p1Key = currentGameState?.playerOne?.toString();
   const isPlayerOne = myKey === p1Key;
+  const isMyTurn = firebaseData.activePlayer === myKey;
+  const myScore = isPlayerOne ? firebaseData.p1Score : firebaseData.p2Score;
+  const oppScore = isPlayerOne ? firebaseData.p2Score : firebaseData.p1Score;
   
-  const isMyTurn = activePlayer === myKey;
-  const myScore = isPlayerOne ? localP1Score : localP2Score;
-  const oppScore = isPlayerOne ? localP2Score : localP1Score;
+  let statusText = "";
+  if (firebaseData.gameStatus === "WAITING") statusText = "Waiting for Player 2...";
+  else if (firebaseData.gameStatus === "ACTIVE") statusText = isMyTurn ? "YOUR TURN! TAP!" : "Opponent's Turn...";
+  else if (firebaseData.gameStatus === "LAST_CHANCE") statusText = isMyTurn ? "LAST CHANCE TO TIE! 😱" : "Opponent's Last Chance...";
+  else if (firebaseData.gameStatus === "SUDDEN_DEATH") statusText = isMyTurn ? "SUDDEN DEATH! SCORE TO WIN!" : "Opponent's Turn (Sudden Death)...";
+  else if (firebaseData.gameStatus === "FINISHED") statusText = (myScore > oppScore) ? "YOU WON! 🏆" : "YOU LOST 💀";
 
   return (
     <div className="arena-container">
@@ -225,7 +274,7 @@ export default function GameArena({ gameAccount, gameState: initialGameState }: 
       <div className="scoreboard">
         <div className="score-box">YOU: <span style={{color:"#39ff14"}}>{myScore}</span> vs OPP: <span style={{color:"#ff0055"}}>{oppScore}</span></div>
         <div style={{marginTop: 10, fontSize: 18, color: isMyTurn ? "#39ff14" : "#666"}}>
-            {gameStatus === "ACTIVE" ? (isMyTurn ? "YOUR TURN! TAP!" : "Opponent's Turn...") : (gameStatus === "FINISHED" ? (myScore >=3 ? "YOU WON!" : "YOU LOST") : "Waiting for Player 2...")}
+            {statusText}
         </div>
       </div>
 
@@ -240,7 +289,7 @@ export default function GameArena({ gameAccount, gameState: initialGameState }: 
         <div className="pointer" style={{ top: `${gaugePosition}%` }} />
       </div>
 
-      <div onClick={handleTap} style={{ position: "absolute", inset: 0, zIndex: 30, cursor: (isMyTurn && gameStatus === "ACTIVE") ? "pointer" : "not-allowed" }} />
+      <div onClick={handleTap} style={{ position: "absolute", inset: 0, zIndex: 30, cursor: (isMyTurn && firebaseData.gameStatus !== "FINISHED") ? "pointer" : "not-allowed" }} />
 
       {showClaim && (
           <div className="claim-overlay">

@@ -872,6 +872,39 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
     __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
 }
 }),
+"[project]/app/firebase.ts [app-client] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+// Import the functions you need from the SDKs you need
+__turbopack_context__.s([
+    "db",
+    ()=>db
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$firebase$2f$app$2f$dist$2f$esm$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/firebase/app/dist/esm/index.esm.js [app-client] (ecmascript) <locals>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$app$2f$dist$2f$esm$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@firebase/app/dist/esm/index.esm.js [app-client] (ecmascript)");
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$firebase$2f$database$2f$dist$2f$esm$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/firebase/database/dist/esm/index.esm.js [app-client] (ecmascript) <locals>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$database$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@firebase/database/dist/index.esm.js [app-client] (ecmascript)");
+;
+;
+// Your web app's Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyAb8i9nHZa8itLq0SVY87qSXawySyyVIfQ",
+    authDomain: "solanaflipoff.firebaseapp.com",
+    databaseURL: "https://solanaflipoff-default-rtdb.firebaseio.com",
+    projectId: "solanaflipoff",
+    storageBucket: "solanaflipoff.firebasestorage.app",
+    messagingSenderId: "214281047542",
+    appId: "1:214281047542:web:9f24f6d9fb79e032d60bd7"
+};
+// Initialize Firebase
+const app = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$app$2f$dist$2f$esm$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["initializeApp"])(firebaseConfig);
+const db = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$database$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getDatabase"])(app);
+if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
+    __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
+}
+}),
 "[project]/app/components/GameArena.tsx [app-client] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
 
@@ -886,9 +919,15 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$hooks$2f$useAnchorPro
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$solana$2f$wallet$2d$adapter$2d$react$2f$lib$2f$esm$2f$useWallet$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@solana/wallet-adapter-react/lib/esm/useWallet.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$solana$2f$web3$2e$js$2f$lib$2f$index$2e$browser$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@solana/web3.js/lib/index.browser.esm.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$use$2d$sound$2f$dist$2f$use$2d$sound$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/use-sound/dist/use-sound.esm.js [app-client] (ecmascript)");
+// FIREBASE
+var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$firebase$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/firebase.ts [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$firebase$2f$database$2f$dist$2f$esm$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/firebase/database/dist/esm/index.esm.js [app-client] (ecmascript) <locals>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$database$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@firebase/database/dist/index.esm.js [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
 "use client";
+;
+;
 ;
 ;
 ;
@@ -899,91 +938,124 @@ function GameArena({ gameAccount, gameState: initialGameState }) {
     _s();
     const program = (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$hooks$2f$useAnchorProgram$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAnchorProgram"])();
     const { publicKey } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$solana$2f$wallet$2d$adapter$2d$react$2f$lib$2f$esm$2f$useWallet$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useWallet"])();
-    // State
-    const [currentGameState, setCurrentGameState] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(initialGameState);
+    // --- STATE ---
+    const [firebaseData, setFirebaseData] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
+    // Chain Data State (To track P2 joining)
+    const [p1Key, setP1Key] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
+    const [p2Key, setP2Key] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
     const [bottleState, setBottleState] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('stand');
     const [isFlipping, setIsFlipping] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [gaugePosition, setGaugePosition] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(0);
-    const [gameStatus, setGameStatus] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("WAITING");
-    const [activePlayer, setActivePlayer] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const [showClaim, setShowClaim] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
-    // LOCAL SCOREBOARD
-    const [localP1Score, setLocalP1Score] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(0);
-    const [localP2Score, setLocalP2Score] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(0);
-    const gameStateRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(initialGameState);
     const requestRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
     const isInteractionLocked = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(false);
-    const [startTime, setStartTime] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(0);
+    const gameStateRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(initialGameState);
     const [playSuccess] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$use$2d$sound$2f$dist$2f$use$2d$sound$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"])('/sounds/bottle-stand.wav');
     const [playFail] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$use$2d$sound$2f$dist$2f$use$2d$sound$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"])('/sounds/bottle-fall.wav');
-    // 1. SETUP & SYNC LOOP
-    const fetchGameData = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
-        "GameArena.useCallback[fetchGameData]": async ()=>{
+    // 1. FETCH CHAIN DATA (POLLING LOOP)
+    // We need this to detect when P2 joins the blockchain
+    const fetchChainData = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
+        "GameArena.useCallback[fetchChainData]": async ()=>{
             if (!program || !gameAccount) return;
             try {
                 // @ts-ignore
                 const account = await program.account.game.fetch(gameAccount);
-                setCurrentGameState(account);
                 gameStateRef.current = account;
                 const p1 = account.playerOne.toString();
                 const p2 = account.playerTwo.toString();
-                // Check if P2 has joined (Is P2 NOT the default 1111... address?)
-                // We use PublicKey.default to be safe
-                const isP2Joined = p2 !== __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$solana$2f$web3$2e$js$2f$lib$2f$index$2e$browser$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["PublicKey"].default.toString();
-                // Logic to transition from WAITING -> ACTIVE
-                if (isP2Joined) {
-                    // If we were waiting, OR if we just loaded in and need to start
-                    if (gameStatus === "WAITING") {
-                        console.log("🚀 P2 Detected! Starting Game...");
-                        setGameStatus("ACTIVE");
-                        setActivePlayer(p1); // P1 always starts
-                        setStartTime(Date.now());
-                    }
-                    // Also sync active player if it changes
-                    const chainActive = account.activePlayer.toString();
-                    if (activePlayer !== chainActive && !isFlipping) {
-                        setActivePlayer(chainActive);
-                    }
+                // Update state if changed
+                setP1Key(p1);
+                if (p2 && p2 !== "11111111111111111111111111111111") {
+                    setP2Key(p2);
                 }
-            } catch (err) {
-                if (err.message?.includes("Account does not exist")) {
-                    setGameStatus("CLOSED");
-                }
+            } catch (e) {
+                console.log(e);
             }
         }
-    }["GameArena.useCallback[fetchGameData]"], [
+    }["GameArena.useCallback[fetchChainData]"], [
         program,
-        gameAccount,
-        gameStatus,
-        activePlayer,
-        isFlipping
+        gameAccount
     ]);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "GameArena.useEffect": ()=>{
-            fetchGameData();
-            const interval = setInterval(fetchGameData, 2000); // Poll every 2s
+            fetchChainData();
+            const interval = setInterval(fetchChainData, 2000); // Poll every 2s
             return ({
                 "GameArena.useEffect": ()=>clearInterval(interval)
             })["GameArena.useEffect"];
         }
     }["GameArena.useEffect"], [
-        fetchGameData
+        fetchChainData
     ]);
-    // 2. GAUGE ANIMATION
+    // 2. FIREBASE LISTENER
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "GameArena.useEffect": ()=>{
+            if (!gameAccount || !publicKey) return;
+            const gameRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$database$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["ref"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$firebase$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["db"], 'games/' + gameAccount.toString());
+            const unsubscribe = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$database$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["onValue"])(gameRef, {
+                "GameArena.useEffect.unsubscribe": (snapshot)=>{
+                    const data = snapshot.val();
+                    if (data) {
+                        setFirebaseData(data);
+                        if (data.gameStatus === "FINISHED") {
+                            const myKey = publicKey.toString();
+                            // Determine winner for Claim button
+                            if (myKey === p1Key && data.p1Score > data.p2Score || myKey === p2Key && data.p2Score > data.p1Score) {
+                                setShowClaim(true);
+                            }
+                        }
+                    } else {
+                        // Init Firebase if empty (Only if we know P1 key)
+                        if (p1Key && publicKey.toString() === p1Key) {
+                            (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$database$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["set"])(gameRef, {
+                                p1Score: 0,
+                                p2Score: 0,
+                                turnCount: 0,
+                                gameStatus: "WAITING"
+                            });
+                        }
+                    }
+                }
+            }["GameArena.useEffect.unsubscribe"]);
+            return ({
+                "GameArena.useEffect": ()=>unsubscribe()
+            })["GameArena.useEffect"];
+        }
+    }["GameArena.useEffect"], [
+        gameAccount,
+        publicKey,
+        p1Key,
+        p2Key
+    ]);
+    // 3. AUTO-START (If P2 is found on chain)
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "GameArena.useEffect": ()=>{
+            // If Firebase says WAITING, but we see P2 on chain...
+            if (firebaseData?.gameStatus === "WAITING" && p2Key && p2Key !== "11111111111111111111111111111111") {
+                console.log("P2 Detected! Starting Game...");
+                // ANYONE can update this to unblock the game
+                (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$database$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["set"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$database$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["ref"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$firebase$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["db"], 'games/' + gameAccount.toString()), {
+                    ...firebaseData,
+                    gameStatus: "ACTIVE"
+                });
+            }
+        }
+    }["GameArena.useEffect"], [
+        p2Key,
+        firebaseData,
+        gameAccount
+    ]);
+    // 4. GAUGE ANIMATION
     const animateGauge = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "GameArena.useCallback[animateGauge]": ()=>{
-            if (isInteractionLocked.current || gameStatus === "FINISHED" || gameStatus === "CLOSED") return;
-            if (startTime > 0) {
-                const now = Date.now();
-                const elapsed = (now - startTime) / 1000;
-                const cyclePosition = elapsed % 2.8 / 2.8;
-                setGaugePosition(cyclePosition * 100);
-            }
+            if (isInteractionLocked.current || !firebaseData || firebaseData.gameStatus !== "ACTIVE" && firebaseData.gameStatus !== "LAST_CHANCE" && firebaseData.gameStatus !== "SUDDEN_DEATH") return;
+            const now = Date.now() / 1000;
+            const cyclePosition = now % 2.8 / 2.8;
+            setGaugePosition(cyclePosition * 100);
             requestRef.current = requestAnimationFrame(animateGauge);
         }
     }["GameArena.useCallback[animateGauge]"], [
-        gameStatus,
-        startTime
+        firebaseData
     ]);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "GameArena.useEffect": ()=>{
@@ -997,69 +1069,87 @@ function GameArena({ gameAccount, gameState: initialGameState }) {
     }["GameArena.useEffect"], [
         animateGauge
     ]);
-    // 3. HANDLE TAP
+    // 5. HANDLE TAP
     const handleTap = async ()=>{
-        if (isFlipping || isInteractionLocked.current || gameStatus !== "ACTIVE") return;
+        if (!firebaseData || isFlipping || isInteractionLocked.current) return;
+        if (firebaseData.gameStatus === "FINISHED" || firebaseData.gameStatus === "WAITING" || firebaseData.gameStatus === "CLOSED") return;
         const myKey = publicKey?.toString();
-        if (activePlayer !== myKey) return alert("Wait for your turn!");
+        const isP1Turn = firebaseData.turnCount % 2 === 0;
+        const isMyTurn = myKey === p1Key && isP1Turn || myKey === p2Key && !isP1Turn;
+        if (!isMyTurn) return alert("Wait for your turn!");
+        // FREEZE
         isInteractionLocked.current = true;
         if (requestRef.current) cancelAnimationFrame(requestRef.current);
-        const now = Date.now();
-        const elapsed = (now - startTime) / 1000;
-        const cyclePos = elapsed % 2.8 / 2.8 * 100;
+        // CALCULATE
+        const now = Date.now() / 1000;
+        const cyclePos = now % 2.8 / 2.8 * 100;
         setGaugePosition(cyclePos);
         const isWin = cyclePos >= 46 && cyclePos <= 54;
+        // SPIN
         setIsFlipping(true);
         setTimeout(()=>{
             setIsFlipping(false);
-            let gameIsOver = false;
+            let newP1 = firebaseData.p1Score;
+            let newP2 = firebaseData.p2Score;
             if (isWin) {
                 playSuccess();
                 setBottleState('stand');
-                if (activePlayer === currentGameState.playerOne.toString()) {
-                    const newScore = localP1Score + 1;
-                    setLocalP1Score(newScore);
-                    if (newScore >= 3) {
-                        setGameStatus("FINISHED");
-                        setShowClaim(true);
-                        gameIsOver = true;
-                    }
-                } else {
-                    const newScore = localP2Score + 1;
-                    setLocalP2Score(newScore);
-                    if (newScore >= 3) {
-                        setGameStatus("FINISHED");
-                        setShowClaim(true);
-                        gameIsOver = true;
-                    }
-                }
+                if (myKey === p1Key) newP1++;
+                else newP2++;
             } else {
                 playFail();
                 setBottleState('fall');
             }
-            if (!gameIsOver) {
-                const p1 = currentGameState.playerOne.toString();
-                const p2 = currentGameState.playerTwo.toString();
-                setActivePlayer(activePlayer === p1 ? p2 : p1);
-            }
-            setTimeout(()=>{
-                if (!gameIsOver) {
-                    setBottleState('stand');
-                    isInteractionLocked.current = false;
-                    animateGauge();
+            // FAIRNESS LOGIC
+            let nextStatus = firebaseData.gameStatus;
+            const currentTurn = firebaseData.turnCount;
+            const p1JustPlayed = currentTurn % 2 === 0;
+            if (nextStatus === "SUDDEN_DEATH") {
+                if (p1JustPlayed) {
+                // Wait for P2 
+                } else {
+                    if (newP1 !== newP2) nextStatus = "FINISHED";
                 }
+            } else if (nextStatus === "LAST_CHANCE") {
+                if (newP1 === newP2) nextStatus = "SUDDEN_DEATH";
+                else nextStatus = "FINISHED";
+            } else {
+                if (newP1 >= 3 || newP2 >= 3) {
+                    if (newP1 > newP2) {
+                        if (p1JustPlayed) nextStatus = "LAST_CHANCE";
+                        else nextStatus = "FINISHED";
+                    } else if (newP2 > newP1) {
+                        nextStatus = "FINISHED";
+                    } else {
+                        nextStatus = "SUDDEN_DEATH";
+                    }
+                }
+            }
+            const nextPlayer = myKey === p1Key ? p2Key : p1Key;
+            (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$database$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["set"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$database$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["ref"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$firebase$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["db"], 'games/' + gameAccount.toString()), {
+                p1Score: newP1,
+                p2Score: newP2,
+                gameStatus: nextStatus,
+                turnCount: currentTurn + 1,
+                activePlayer: nextStatus === "FINISHED" ? "NONE" : nextPlayer
+            });
+            setTimeout(()=>{
+                setBottleState('stand');
+                isInteractionLocked.current = false;
+                animateGauge();
             }, 2000);
         }, 700);
     };
-    // 4. CLAIM PRIZE
     const handleClaim = async ()=>{
         if (!program || !publicKey) return;
         try {
-            const isP1 = currentGameState.playerOne.toString() === publicKey.toString();
-            const loserKey = isP1 ? currentGameState.playerTwo : currentGameState.playerOne;
-            await program.methods.claimVictory().accounts({
+            const loserKey = publicKey?.toString() === p1Key ? p2Key : p1Key;
+            const winnerPK = new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$solana$2f$web3$2e$js$2f$lib$2f$index$2e$browser$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["PublicKey"](publicKey.toString());
+            const loserPK = new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$solana$2f$web3$2e$js$2f$lib$2f$index$2e$browser$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["PublicKey"](loserKey);
+            await program.methods.resolveGame().accounts({
                 gameAccount: gameAccount,
-                winner: publicKey
+                winnerPubkey: winnerPK,
+                loserPubkey: loserPK
             }).rpc();
             alert("$$$ PAYOUT RECEIVED $$$");
             window.location.reload();
@@ -1068,7 +1158,22 @@ function GameArena({ gameAccount, gameState: initialGameState }) {
             alert("Claim failed.");
         }
     };
-    if (gameStatus === "CLOSED") return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+    if (!firebaseData) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        style: {
+            height: "100vh",
+            background: "#000",
+            color: "lime",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center"
+        },
+        children: "CONNECTING..."
+    }, void 0, false, {
+        fileName: "[project]/app/components/GameArena.tsx",
+        lineNumber: 239,
+        columnNumber: 29
+    }, this);
+    if (firebaseData.gameStatus === "CLOSED") return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         style: {
             height: "100vh",
             background: "#000",
@@ -1081,30 +1186,20 @@ function GameArena({ gameAccount, gameState: initialGameState }) {
         children: "GAME OVER. PRIZE CLAIMED."
     }, void 0, false, {
         fileName: "[project]/app/components/GameArena.tsx",
-        lineNumber: 194,
-        columnNumber: 39
-    }, this);
-    if (!currentGameState) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        style: {
-            height: "100vh",
-            background: "#000",
-            color: "lime",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center"
-        },
-        children: "LOADING..."
-    }, void 0, false, {
-        fileName: "[project]/app/components/GameArena.tsx",
-        lineNumber: 196,
-        columnNumber: 33
+        lineNumber: 240,
+        columnNumber: 52
     }, this);
     const myKey = publicKey?.toString();
-    const p1Key = currentGameState?.playerOne?.toString();
     const isPlayerOne = myKey === p1Key;
-    const isMyTurn = activePlayer === myKey;
-    const myScore = isPlayerOne ? localP1Score : localP2Score;
-    const oppScore = isPlayerOne ? localP2Score : localP1Score;
+    const isMyTurn = firebaseData.activePlayer === myKey;
+    const myScore = isPlayerOne ? firebaseData.p1Score : firebaseData.p2Score;
+    const oppScore = isPlayerOne ? firebaseData.p2Score : firebaseData.p1Score;
+    let statusText = "";
+    if (firebaseData.gameStatus === "WAITING") statusText = "Waiting for Player 2...";
+    else if (firebaseData.gameStatus === "ACTIVE") statusText = isMyTurn ? "YOUR TURN! TAP!" : "Opponent's Turn...";
+    else if (firebaseData.gameStatus === "LAST_CHANCE") statusText = isMyTurn ? "LAST CHANCE TO TIE! 😱" : "Opponent's Last Chance...";
+    else if (firebaseData.gameStatus === "SUDDEN_DEATH") statusText = isMyTurn ? "SUDDEN DEATH! SCORE TO WIN!" : "Opponent's Turn (Sudden Death)...";
+    else if (firebaseData.gameStatus === "FINISHED") statusText = myScore > oppScore ? "YOU WON! 🏆" : "YOU LOST 💀";
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "jsx-6e83a9ff69975cc5" + " " + "arena-container",
         children: [
@@ -1127,7 +1222,7 @@ function GameArena({ gameAccount, gameState: initialGameState }) {
                                 children: myScore
                             }, void 0, false, {
                                 fileName: "[project]/app/components/GameArena.tsx",
-                                lineNumber: 226,
+                                lineNumber: 275,
                                 columnNumber: 41
                             }, this),
                             " vs OPP: ",
@@ -1139,13 +1234,13 @@ function GameArena({ gameAccount, gameState: initialGameState }) {
                                 children: oppScore
                             }, void 0, false, {
                                 fileName: "[project]/app/components/GameArena.tsx",
-                                lineNumber: 226,
+                                lineNumber: 275,
                                 columnNumber: 98
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/GameArena.tsx",
-                        lineNumber: 226,
+                        lineNumber: 275,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1155,16 +1250,16 @@ function GameArena({ gameAccount, gameState: initialGameState }) {
                             color: isMyTurn ? "#39ff14" : "#666"
                         },
                         className: "jsx-6e83a9ff69975cc5",
-                        children: gameStatus === "ACTIVE" ? isMyTurn ? "YOUR TURN! TAP!" : "Opponent's Turn..." : gameStatus === "FINISHED" ? myScore >= 3 ? "YOU WON!" : "YOU LOST" : "Waiting for Player 2..."
+                        children: statusText
                     }, void 0, false, {
                         fileName: "[project]/app/components/GameArena.tsx",
-                        lineNumber: 227,
+                        lineNumber: 276,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/GameArena.tsx",
-                lineNumber: 225,
+                lineNumber: 274,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
@@ -1173,7 +1268,7 @@ function GameArena({ gameAccount, gameState: initialGameState }) {
                 className: "jsx-6e83a9ff69975cc5" + " " + "table-object"
             }, void 0, false, {
                 fileName: "[project]/app/components/GameArena.tsx",
-                lineNumber: 232,
+                lineNumber: 281,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1187,12 +1282,12 @@ function GameArena({ gameAccount, gameState: initialGameState }) {
                     className: "jsx-6e83a9ff69975cc5" + " " + "bottle-img"
                 }, void 0, false, {
                     fileName: "[project]/app/components/GameArena.tsx",
-                    lineNumber: 235,
+                    lineNumber: 284,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/GameArena.tsx",
-                lineNumber: 234,
+                lineNumber: 283,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1202,7 +1297,7 @@ function GameArena({ gameAccount, gameState: initialGameState }) {
                         className: "jsx-6e83a9ff69975cc5" + " " + "success-zone"
                     }, void 0, false, {
                         fileName: "[project]/app/components/GameArena.tsx",
-                        lineNumber: 239,
+                        lineNumber: 288,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1212,13 +1307,13 @@ function GameArena({ gameAccount, gameState: initialGameState }) {
                         className: "jsx-6e83a9ff69975cc5" + " " + "pointer"
                     }, void 0, false, {
                         fileName: "[project]/app/components/GameArena.tsx",
-                        lineNumber: 240,
+                        lineNumber: 289,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/GameArena.tsx",
-                lineNumber: 238,
+                lineNumber: 287,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1227,12 +1322,12 @@ function GameArena({ gameAccount, gameState: initialGameState }) {
                     position: "absolute",
                     inset: 0,
                     zIndex: 30,
-                    cursor: isMyTurn && gameStatus === "ACTIVE" ? "pointer" : "not-allowed"
+                    cursor: isMyTurn && firebaseData.gameStatus !== "FINISHED" ? "pointer" : "not-allowed"
                 },
                 className: "jsx-6e83a9ff69975cc5"
             }, void 0, false, {
                 fileName: "[project]/app/components/GameArena.tsx",
-                lineNumber: 243,
+                lineNumber: 292,
                 columnNumber: 7
             }, this),
             showClaim && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1247,7 +1342,7 @@ function GameArena({ gameAccount, gameState: initialGameState }) {
                         children: "VICTORY! 🏆"
                     }, void 0, false, {
                         fileName: "[project]/app/components/GameArena.tsx",
-                        lineNumber: 247,
+                        lineNumber: 296,
                         columnNumber: 15
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1256,23 +1351,23 @@ function GameArena({ gameAccount, gameState: initialGameState }) {
                         children: "CLAIM PRIZE"
                     }, void 0, false, {
                         fileName: "[project]/app/components/GameArena.tsx",
-                        lineNumber: 248,
+                        lineNumber: 297,
                         columnNumber: 15
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/GameArena.tsx",
-                lineNumber: 246,
+                lineNumber: 295,
                 columnNumber: 11
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/GameArena.tsx",
-        lineNumber: 207,
+        lineNumber: 256,
         columnNumber: 5
     }, this);
 }
-_s(GameArena, "fmMKW77csV72/oEkQbEoIRd9qes=", false, function() {
+_s(GameArena, "nnylzJe1EBtJOQ8CPjlFsDnjVQ0=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$hooks$2f$useAnchorProgram$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAnchorProgram"],
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$solana$2f$wallet$2d$adapter$2d$react$2f$lib$2f$esm$2f$useWallet$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useWallet"],
@@ -1364,4 +1459,4 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
 }),
 ]);
 
-//# sourceMappingURL=app_7d58f493._.js.map
+//# sourceMappingURL=app_f2141a66._.js.map

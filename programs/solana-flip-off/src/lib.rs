@@ -34,7 +34,8 @@ pub mod solana_flip_off {
     pub fn join_game(ctx: Context<JoinGame>) -> Result<()> {
         let player_two = &ctx.accounts.player_two;
         require!(ctx.accounts.game_account.game_state == GameState::WaitingForPlayer, GameError::InvalidGameState);
-        
+        require!(player_two.key() != ctx.accounts.game_account.player_one, GameError::AlreadyJoined);
+
         let stake = ctx.accounts.game_account.stake_amount;
         let cpi_program = ctx.accounts.system_program.to_account_info();
         let cpi_accounts = Transfer {
@@ -51,56 +52,57 @@ pub mod solana_flip_off {
         Ok(())
     }
 
-    // Note: We removed play_turn entirely because gameplay is now off-chain.
+    // --- PLAY TURN REMOVED (OFF-CHAIN GAMEPLAY) ---
 
-    // CLAIM VICTORY (Cash Out)
-    pub fn claim_victory(ctx: Context<ClaimVictory>) -> Result<()> {
+    // --- FIXED RESOLVE GAME ---
+    pub fn resolve_game(ctx: Context<ResolveGame>) -> Result<()> {
         let game = &ctx.accounts.game_account;
         
-        // Note: We removed the "check if finished" requirement because 
-        // score tracking is now handled on the frontend.
-        
-        // Security: Only a player in this game can claim
-        let signer_key = ctx.accounts.winner.key();
-        require!(
-            signer_key == game.player_one || signer_key == game.player_two,
-            GameError::Unauthorized
-        );
-
+        // 1. Calculate Treasury Fee (10% of one stake, effectively 5% of pot)
         let treasury_fee = game.stake_amount / 10;
-        let total_payout = (game.stake_amount * 2) - treasury_fee;
 
-        let game_id_bytes = game.game_id.to_le_bytes();
-        let seeds = &[
-            b"game",
-            game.player_one.as_ref(),
-            game_id_bytes.as_ref(),
-            &[ctx.bumps.game_account],
-        ];
-        let signer_seeds = &[&seeds[..]];
+        // 2. Manual Transfer to Treasury (Bypasses "Data" error)
+        let game_lamports = ctx.accounts.game_account.to_account_info();
+        let treasury_lamports = ctx.accounts.treasury_wallet_pubkey.to_account_info();
 
-        let cpi_program = ctx.accounts.system_program.to_account_info();
+        **game_lamports.try_borrow_mut_lamports()? -= treasury_fee;
+        **treasury_lamports.try_borrow_mut_lamports()? += treasury_fee;
 
-        // Pay Treasury
-        let cpi_accounts_treasury = Transfer {
-            from: ctx.accounts.game_account.to_account_info(),
-            to: ctx.accounts.treasury_wallet_pubkey.to_account_info(),
-        };
-        transfer(CpiContext::new_with_signer(cpi_program.clone(), cpi_accounts_treasury, signer_seeds), treasury_fee)?;
+        // 3. Pay Winner
+        // We don't need code here! 
+        // The `close = winner_pubkey` constraint in the struct below AUTOMATICALLY
+        // sends all remaining lamports (90% of pot + Rent) to the winner when the account closes.
+        
+        Ok(())
+    }
 
-        // Pay Winner
-        let cpi_accounts_winner = Transfer {
-            from: ctx.accounts.game_account.to_account_info(),
-            to: ctx.accounts.winner.to_account_info(),
-        };
-        transfer(CpiContext::new_with_signer(cpi_program.clone(), cpi_accounts_winner, signer_seeds), total_payout)?;
+    // TIMEOUT CLAIM
+    pub fn claim_timeout_win(ctx: Context<ClaimTimeout>) -> Result<()> {
+        let game = &ctx.accounts.game_account;
+        let signer = ctx.accounts.signer.key();
+        let clock = Clock::get()?;
 
+        require!(game.game_state == GameState::Active, GameError::InvalidGameState);
+        require!(signer != game.active_player, GameError::NotYourTurnToClaim);
+
+        let time_since_last_move = clock.unix_timestamp - game.game_start_time;
+        require!(time_since_last_move > 60, GameError::TimeoutNotReached);
+
+        // Manual Transfer Logic here too for safety
+        let treasury_fee = game.stake_amount / 10;
+        let game_lamports = ctx.accounts.game_account.to_account_info();
+        let treasury_lamports = ctx.accounts.treasury_wallet_pubkey.to_account_info();
+
+        **game_lamports.try_borrow_mut_lamports()? -= treasury_fee;
+        **treasury_lamports.try_borrow_mut_lamports()? += treasury_fee;
+
+        // 'close = signer' handles the rest
         Ok(())
     }
 }
 
 #[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq, Debug)]
-pub enum GameState { WaitingForPlayer, Active, Finished }
+pub enum GameState { WaitingForPlayer, Active, LastChance, SuddenDeath, Finished }
 
 #[account]
 pub struct Game {
@@ -141,22 +143,50 @@ pub struct JoinGame<'info> {
 }
 
 #[derive(Accounts)]
-pub struct ClaimVictory<'info> {
+pub struct PlayTurn<'info> {
+    pub signer: Signer<'info>,
+    #[account(mut)]
+    pub game_account: Account<'info, Game>,
+}
+
+#[derive(Accounts)]
+pub struct ResolveGame<'info> {
     #[account(
         mut,
-        close = winner, // Close account and send rent to winner
+        close = winner_pubkey, // <--- THIS MAGICALLY PAYS THE WINNER
         seeds = [b"game", game_account.player_one.as_ref(), &game_account.game_id.to_le_bytes()],
         bump
     )]
     pub game_account: Account<'info, Game>,
-    
-    #[account(mut)]
-    pub winner: Signer<'info>,
 
+    /// CHECK: Winner validation is trusted in this P2P version
+    #[account(mut)]
+    pub winner_pubkey: UncheckedAccount<'info>,
+    
+    /// CHECK: Logging only
+    pub loser_pubkey: UncheckedAccount<'info>,
+
+    /// CHECK: Treasury
     #[account(mut, address = TREASURY_PUBKEY)]
     pub treasury_wallet_pubkey: UncheckedAccount<'info>,
     
     pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+pub struct ClaimTimeout<'info> {
+    #[account(mut, close = signer, seeds = [b"game", game_account.player_one.as_ref(), &game_account.game_id.to_le_bytes()], bump)]
+    pub game_account: Account<'info, Game>,
+    
+    #[account(mut)]
+    pub signer: Signer<'info>,
+    
+    /// CHECK: Treasury
+    #[account(mut, address = TREASURY_PUBKEY)]
+    pub treasury_wallet_pubkey: UncheckedAccount<'info>,
+    
+    pub system_program: Program<'info, System>,
+    pub clock: Sysvar<'info, Clock>,
 }
 
 #[error_code]
@@ -165,4 +195,6 @@ pub enum GameError {
     #[msg("Player already joined.")] AlreadyJoined,
     #[msg("Unauthorized.")] Unauthorized,
     #[msg("Insufficient stake.")] InsufficientStake,
+    #[msg("Timeout not reached yet.")] TimeoutNotReached,
+    #[msg("You cannot claim timeout on your own turn.")] NotYourTurnToClaim,
 }
